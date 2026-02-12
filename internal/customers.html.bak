@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customers - Venue ERP Internal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/internal.css">
+  <style>
+    .customer-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: all 0.2s;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .customer-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(-2px);
+    }
+
+    .customer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+    }
+
+    .customer-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--info));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-right: 1rem;
+    }
+
+    .customer-info {
+      flex: 1;
+    }
+
+    .customer-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .customer-email {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .customer-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .customer-stat {
+      text-align: center;
+    }
+
+    .customer-stat-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .customer-stat-label {
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-top: 0.25rem;
+    }
+
+    .customer-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+
+    .customer-tag {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+      background: var(--light);
+      color: var(--gray);
+      font-weight: 600;
+    }
+
+    .customer-tag.vip {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    .customer-tag.repeat {
+      background: #DBEAFE;
+      color: #1E40AF;
+    }
+
+    .customer-tier {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .tier-badge {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .tier-badge.gold {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+    }
+
+    .tier-badge.silver {
+      background: linear-gradient(135deg, #94A3B8, #64748B);
+    }
+
+    .tier-badge.bronze {
+      background: linear-gradient(135deg, #CD7F32, #A0522D);
+    }
+
+    .search-filter-bar {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="panel-layout">
+    <!-- Sidebar Component -->
+    <div id="sidebarContainer"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header Component -->
+      <div id="headerContainer"></div>
+
+      <!-- Page Content -->
+      <div class="page-content">
+        <div class="container-fluid">
+
+          <!-- Stats Widgets -->
+          <div class="widget-grid" id="statsWidgets"></div>
+
+          <!-- Search & Filters -->
+          <div class="search-filter-bar">
+            <div class="grid grid-4">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Search Customers</label>
+                <input type="text" class="form-control" id="searchCustomers" placeholder="Search by name, email, phone...">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Customer Tier</label>
+                <select class="form-control" id="filterTier">
+                  <option value="">All Tiers</option>
+                  <option value="gold">Gold</option>
+                  <option value="silver">Silver</option>
+                  <option value="bronze">Bronze</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Sort By</label>
+                <select class="form-control" id="sortBy">
+                  <option value="recent">Most Recent</option>
+                  <option value="revenue">Highest Revenue</option>
+                  <option value="bookings">Most Bookings</option>
+                  <option value="name">Name (A-Z)</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" style="opacity: 0;">Actions</label>
+                <div style="display: flex; gap: 0.5rem;">
+                  <button class="btn btn-primary" style="flex: 1;">
+                    <i class="fas fa-filter"></i> Filter
+                  </button>
+                  <button class="btn btn-secondary">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customers Grid -->
+          <div class="grid grid-3" id="customersGrid"></div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="js/roles-config.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/modals.js"></script>
+  <script src="js/modals-extended.js"></script>
+  <script src="js/internal.js"></script>
+  <script>
+    $(document).ready(async function() {
+
+      // ========== LOAD COMPONENTS ==========
+      await ComponentLoader.loadMultiple([
+        { name: 'sidebar', target: 'sidebarContainer' },
+        { name: 'header', target: 'headerContainer' }
+      ]);
+
+      // Set page info
+      PageManager.setTitle('Customer Directory');
+      PageManager.setActiveNav('customers');
+
+      // Set quick actions
+      PageManager.setQuickActions([
+        {
+          label: 'Add Customer',
+          icon: 'fas fa-plus',
+          class: 'btn-primary',
+          onClick: "openModal('newCustomerModal')"
+        },
+        {
+          label: 'Import CSV',
+          icon: 'fas fa-upload',
+          class: 'btn-secondary',
+          onClick: "importCustomers()"
+        },
+        {
+          label: 'Export List',
+          icon: 'fas fa-download',
+          class: 'btn-secondary',
+          onClick: "exportCustomers()"
+        }
+      ]);
+
+      // ========== RENDER WIDGETS ==========
+      const widgets = [
+        {
+          label: 'Total Customers',
+          value: '342',
+          change: '+28 this month',
+          icon: 'fas fa-users',
+          iconClass: 'primary'
+        },
+        {
+          label: 'Repeat Customers',
+          value: '65%',
+          change: 'Loyalty rate',
+          icon: 'fas fa-sync',
+          iconClass: 'success'
+        },
+        {
+          label: 'Avg. Lifetime Value',
+          value: '$8,450',
+          change: '+12% from last year',
+          icon: 'fas fa-dollar-sign',
+          iconClass: 'info'
+        },
+        {
+          label: 'VIP Customers',
+          value: '42',
+          change: 'Top spenders',
+          icon: 'fas fa-crown',
+          iconClass: 'warning'
+        }
+      ];
+
+      WidgetBuilder.renderWidgets(widgets, 'statsWidgets');
+
+      // ========== SAMPLE CUSTOMERS DATA ==========
+      const customersData = [
+        {
+          id: 'C-1001',
+          name: 'John Smith',
+          email: 'john.smith@email.com',
+          phone: '5551234567',
+          totalBookings: 8,
+          totalRevenue: 42500,
+          lastBooking: '2026-01-15',
+          tier: 'gold',
+          tags: ['VIP', 'Repeat'],
+          company: 'Smith Enterprises'
+        },
+        {
+          id: 'C-1002',
+          name: 'Sarah Johnson',
+          email: 'sarah.j@email.com',
+          phone: '5559876543',
+          totalBookings: 5,
+          totalRevenue: 18900,
+          lastBooking: '2026-02-01',
+          tier: 'silver',
+          tags: ['Repeat'],
+          company: null
+        },
+        {
+          id: 'C-1003',
+          name: 'Michael Chen',
+          email: 'michael@techcorp.com',
+          phone: '5555551111',
+          totalBookings: 12,
+          totalRevenue: 68000,
+          lastBooking: '2026-02-08',
+          tier: 'gold',
+          tags: ['VIP', 'Corporate', 'Repeat'],
+          company: 'TechCorp Inc.'
+        },
+        {
+          id: 'C-1004',
+          name: 'Emily Davis',
+          email: 'emily.davis@email.com',
+          phone: '5552223333',
+          totalBookings: 3,
+          totalRevenue: 9200,
+          lastBooking: '2025-12-20',
+          tier: 'bronze',
+          tags: ['Repeat'],
+          company: null
+        },
+        {
+          id: 'C-1005',
+          name: 'Robert Wilson',
+          email: 'robert@globalinc.com',
+          phone: '5554445555',
+          totalBookings: 15,
+          totalRevenue: 95000,
+          lastBooking: '2026-02-10',
+          tier: 'gold',
+          tags: ['VIP', 'Corporate', 'Repeat'],
+          company: 'Global Inc.'
+        },
+        {
+          id: 'C-1006',
+          name: 'Jessica Brown',
+          email: 'jessica.b@email.com',
+          phone: '5556667777',
+          totalBookings: 4,
+          totalRevenue: 12400,
+          lastBooking: '2026-01-28',
+          tier: 'silver',
+          tags: ['Repeat'],
+          company: null
+        },
+        {
+          id: 'C-1007',
+          name: 'David Martinez',
+          email: 'david@startup.com',
+          phone: '5558889999',
+          totalBookings: 6,
+          totalRevenue: 22500,
+          lastBooking: '2026-02-05',
+          tier: 'silver',
+          tags: ['VIP', 'Repeat'],
+          company: 'StartupXYZ'
+        },
+        {
+          id: 'C-1008',
+          name: 'Amanda Taylor',
+          email: 'amanda.t@email.com',
+          phone: '5551112222',
+          totalBookings: 2,
+          totalRevenue: 5800,
+          lastBooking: '2025-11-15',
+          tier: 'bronze',
+          tags: [],
+          company: null
+        },
+        {
+          id: 'C-1009',
+          name: 'Christopher Lee',
+          email: 'chris@leecorp.com',
+          phone: '5553334444',
+          totalBookings: 10,
+          totalRevenue: 54000,
+          lastBooking: '2026-02-11',
+          tier: 'gold',
+          tags: ['VIP', 'Corporate', 'Repeat'],
+          company: 'Lee Corporation'
+        },
+        {
+          id: 'C-1010',
+          name: 'Jennifer White',
+          email: 'jennifer.w@email.com',
+          phone: '5555556666',
+          totalBookings: 4,
+          totalRevenue: 14200,
+          lastBooking: '2026-01-22',
+          tier: 'silver',
+          tags: ['Repeat'],
+          company: null
+        },
+        {
+          id: 'C-1011',
+          name: 'Thomas Anderson',
+          email: 'thomas@anderson.com',
+          phone: '5557778888',
+          totalBookings: 7,
+          totalRevenue: 31500,
+          lastBooking: '2026-02-03',
+          tier: 'gold',
+          tags: ['VIP', 'Repeat'],
+          company: 'Anderson LLC'
+        },
+        {
+          id: 'C-1012',
+          name: 'Lisa Garcia',
+          email: 'lisa.garcia@email.com',
+          phone: '5559990000',
+          totalBookings: 3,
+          totalRevenue: 8900,
+          lastBooking: '2025-12-30',
+          tier: 'bronze',
+          tags: [],
+          company: null
+        }
+      ];
+
+      renderCustomersGrid(customersData);
+
+      // Search functionality
+      $('#searchCustomers').on('input', function() {
+        const searchTerm = $(this).val().toLowerCase();
+        filterAndRenderCustomers(customersData, searchTerm);
+      });
+
+    });
+
+    // ========== RENDER CUSTOMERS GRID ==========
+    function renderCustomersGrid(customers) {
+      const html = customers.map(customer => createCustomerCard(customer)).join('');
+      $('#customersGrid').html(html);
+    }
+
+    function createCustomerCard(customer) {
+      const initials = customer.name.split(' ').map(n => n[0]).join('');
+      const tierBadge = customer.tier ? `<div class="customer-tier"><span class="tier-badge ${customer.tier}">${customer.tier}</span></div>` : '';
+
+      return `
+        <div class="customer-card" onclick="viewCustomer('${customer.id}')" style="position: relative;">
+          ${tierBadge}
+          <div class="customer-header">
+            <div style="display: flex; align-items: center; flex: 1;">
+              <div class="customer-avatar">${initials}</div>
+              <div class="customer-info">
+                <div class="customer-name">${customer.name}</div>
+                <div class="customer-email">${customer.email}</div>
+                ${customer.company ? `<div style="color: var(--gray); font-size: 0.85rem; margin-top: 0.25rem;"><i class="fas fa-building"></i> ${customer.company}</div>` : ''}
+              </div>
+            </div>
+          </div>
+
+          <div class="customer-stats">
+            <div class="customer-stat">
+              <div class="customer-stat-value">${customer.totalBookings}</div>
+              <div class="customer-stat-label">Bookings</div>
+            </div>
+            <div class="customer-stat">
+              <div class="customer-stat-value">${Formatters.currency(customer.totalRevenue)}</div>
+              <div class="customer-stat-label">Revenue</div>
+            </div>
+            <div class="customer-stat">
+              <div class="customer-stat-value">${getRelativeTime(customer.lastBooking)}</div>
+              <div class="customer-stat-label">Last Booking</div>
+            </div>
+          </div>
+
+          ${customer.tags.length > 0 ? `
+            <div class="customer-tags">
+              ${customer.tags.map(tag => `<span class="customer-tag ${tag.toLowerCase()}">${tag}</span>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function getRelativeTime(dateStr) {
+      const date = new Date(dateStr);
+      const now = new Date();
+      const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 0) return 'Today';
+      if (diffDays === 1) return 'Yesterday';
+      if (diffDays < 7) return `${diffDays}d ago`;
+      if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+      if (diffDays < 365) return `${Math.floor(diffDays / 30)}mo ago`;
+      return `${Math.floor(diffDays / 365)}y ago`;
+    }
+
+    function filterAndRenderCustomers(customers, searchTerm) {
+      const filtered = customers.filter(customer =>
+        customer.name.toLowerCase().includes(searchTerm) ||
+        customer.email.toLowerCase().includes(searchTerm) ||
+        customer.phone.includes(searchTerm) ||
+        (customer.company && customer.company.toLowerCase().includes(searchTerm))
+      );
+      renderCustomersGrid(filtered);
+    }
+
+    // ========== ACTION FUNCTIONS ==========
+    function viewCustomer(id) {
+      console.log('View customer:', id);
+      showCustomerDetail(id);
+    }
+
+    function importCustomers() {
+      showSuccessToast('Import customers feature coming soon');
+    }
+
+    function exportCustomers() {
+      showSuccessToast('Export customer list feature coming soon');
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management - Venue ERP Internal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/internal.css">
+</head>
+<body>
+
+  <div class="panel-layout">
+    <!-- Sidebar Component -->
+    <div id="sidebarContainer"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header Component -->
+      <div id="headerContainer"></div>
+
+      <!-- Page Content -->
+      <div class="page-content">
+        <div class="container-fluid">
+
+          <!-- Stats Widgets -->
+          <div class="widget-grid">
+            <div class="stat-widget">
+              <div class="stat-icon primary">
+                <i class="fas fa-users"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-label">Total Users</div>
+                <div class="stat-value">48</div>
+                <div class="stat-change positive">
+                  <i class="fas fa-arrow-up"></i> +5 this month
+                </div>
+              </div>
+            </div>
+            <div class="stat-widget">
+              <div class="stat-icon success">
+                <i class="fas fa-user-check"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-label">Active Users</div>
+                <div class="stat-value">42</div>
+                <div class="stat-change positive">
+                  <i class="fas fa-arrow-up"></i> 87.5% of total
+                </div>
+              </div>
+            </div>
+            <div class="stat-widget">
+              <div class="stat-icon warning">
+                <i class="fas fa-user-shield"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-label">Admins</div>
+                <div class="stat-value">3</div>
+                <div class="stat-change neutral">
+                  <i class="fas fa-minus"></i> No change
+                </div>
+              </div>
+            </div>
+            <div class="stat-widget">
+              <div class="stat-icon danger">
+                <i class="fas fa-user-slash"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-label">Inactive Users</div>
+                <div class="stat-value">6</div>
+                <div class="stat-change negative">
+                  <i class="fas fa-arrow-down"></i> 2 this week
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filters & Search -->
+          <div class="card" style="margin-bottom: 2rem;">
+            <div class="card-body">
+              <div class="grid grid-4">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Role</label>
+                  <select class="form-control" id="filterRole">
+                    <option value="">All Roles</option>
+                    <option value="sa">Super Admin</option>
+                    <option value="bm">Branch Manager</option>
+                    <option value="sl">Sales / Front Desk</option>
+                    <option value="ac">Accountant</option>
+                    <option value="op">Operations Manager</option>
+                    <option value="vn">Vendor</option>
+                    <option value="se">Security Staff</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Status</label>
+                  <select class="form-control" id="filterStatus">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Search</label>
+                  <input type="text" class="form-control" id="searchUser" placeholder="Name or email...">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" style="opacity: 0;">Actions</label>
+                  <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-primary" style="flex: 1;">
+                      <i class="fas fa-filter"></i> Filter
+                    </button>
+                    <button class="btn btn-secondary">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Users Table -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">User Management (48)</h3>
+              <div style="display: flex; gap: 0.75rem;">
+                <button class="btn btn-sm btn-secondary" onclick="exportUsers()">
+                  <i class="fas fa-download"></i> Export
+                </button>
+                <button class="btn btn-sm btn-primary" onclick="openModal('newUserModal')">
+                  <i class="fas fa-user-plus"></i> Add User
+                </button>
+              </div>
+            </div>
+            <div class="card-body" style="padding: 0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                  <!-- Sample data -->
+                  <tr>
+                    <td>#001</td>
+                    <td>
+                      <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div class="avatar">JD</div>
+                        <div>
+                          <div style="font-weight: 600;">John Doe</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>john.doe@venueerp.com</td>
+                    <td><span class="badge badge-purple">Super Admin</span></td>
+                    <td><span class="badge badge-success">Active</span></td>
+                    <td>2 hours ago</td>
+                    <td>
+                      <div class="table-actions">
+                        <button class="btn-icon" onclick="viewUser(1)" title="View">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-icon" onclick="editUser(1)" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-icon" onclick="deleteUser(1)" title="Delete">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>#002</td>
+                    <td>
+                      <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div class="avatar">SM</div>
+                        <div>
+                          <div style="font-weight: 600;">Sarah Miller</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>sarah.m@venueerp.com</td>
+                    <td><span class="badge badge-primary">Branch Manager</span></td>
+                    <td><span class="badge badge-success">Active</span></td>
+                    <td>5 hours ago</td>
+                    <td>
+                      <div class="table-actions">
+                        <button class="btn-icon" onclick="viewUser(2)" title="View">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-icon" onclick="editUser(2)" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-icon" onclick="deleteUser(2)" title="Delete">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>#003</td>
+                    <td>
+                      <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div class="avatar">MT</div>
+                        <div>
+                          <div style="font-weight: 600;">Mike Thompson</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>mike.t@venueerp.com</td>
+                    <td><span class="badge badge-info">Sales / Front Desk</span></td>
+                    <td><span class="badge badge-success">Active</span></td>
+                    <td>1 day ago</td>
+                    <td>
+                      <div class="table-actions">
+                        <button class="btn-icon" onclick="viewUser(3)" title="View">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-icon" onclick="editUser(3)" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-icon" onclick="deleteUser(3)" title="Delete">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>#004</td>
+                    <td>
+                      <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div class="avatar">EC</div>
+                        <div>
+                          <div style="font-weight: 600;">Emma Clark</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>emma.c@venueerp.com</td>
+                    <td><span class="badge badge-success">Accountant</span></td>
+                    <td><span class="badge badge-success">Active</span></td>
+                    <td>3 hours ago</td>
+                    <td>
+                      <div class="table-actions">
+                        <button class="btn-icon" onclick="viewUser(4)" title="View">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-icon" onclick="editUser(4)" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-icon" onclick="deleteUser(4)" title="Delete">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>#005</td>
+                    <td>
+                      <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div class="avatar">DW</div>
+                        <div>
+                          <div style="font-weight: 600;">David Wilson</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>david.w@venueerp.com</td>
+                    <td><span class="badge badge-warning">Operations Manager</span></td>
+                    <td><span class="badge badge-success">Active</span></td>
+                    <td>30 minutes ago</td>
+                    <td>
+                      <div class="table-actions">
+                        <button class="btn-icon" onclick="viewUser(5)" title="View">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-icon" onclick="editUser(5)" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-icon" onclick="deleteUser(5)" title="Delete">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="color: var(--gray); font-size: 0.9rem;">
+                  Showing 5 of 48 users
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                  <button class="btn btn-sm btn-secondary">Previous</button>
+                  <button class="btn btn-sm btn-primary">1</button>
+                  <button class="btn btn-sm btn-secondary">2</button>
+                  <button class="btn btn-sm btn-secondary">3</button>
+                  <button class="btn btn-sm btn-secondary">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- New User Modal -->
+  <div id="newUserModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Add New User</h2>
+        <button class="modal-close" onclick="closeModal('newUserModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="newUserForm">
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email *</label>
+              <input type="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Role *</label>
+              <select class="form-control" required>
+                <option value="">Select Role</option>
+                <option value="sa">Super Admin</option>
+                <option value="bm">Branch Manager</option>
+                <option value="sl">Sales / Front Desk</option>
+                <option value="ac">Accountant</option>
+                <option value="op">Operations Manager</option>
+                <option value="vn">Vendor</option>
+                <option value="se">Security Staff</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone</label>
+              <input type="tel" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password *</label>
+              <input type="password" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirm Password *</label>
+              <input type="password" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <input type="checkbox" checked> Send welcome email
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('newUserModal')">Cancel</button>
+        <button type="submit" form="newUserForm" class="btn btn-primary">
+          <i class="fas fa-user-plus"></i> Add User
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="js/roles-config.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/internal.js"></script>
+  <script>
+    // Page initialization
+    $(document).ready(async function() {
+      // CRITICAL: Check page access first - security fix
+      if (!RoleManager.requirePageAccess()) {
+        return; // Stop execution if unauthorized
+      }
+
+      await initializePage('User Management');
+    });
+
+    // Export users
+    function exportUsers() {
+      showSuccessToast('Exporting users to CSV...');
+      console.log('Export users functionality');
+    }
+
+    // View user
+    function viewUser(id) {
+      console.log('View user:', id);
+      showInfoToast(`Viewing user #${id}`);
+    }
+
+    // Edit user
+    function editUser(id) {
+      console.log('Edit user:', id);
+      showInfoToast(`Editing user #${id}`);
+    }
+
+    // Delete user
+    function deleteUser(id) {
+      confirmAction(
+        'Delete User',
+        `Are you sure you want to delete this user?`,
+        () => { showSuccessToast('User deleted successfully!'); },
+        'Delete',
+        'btn-danger'
+      );
+    }
+
+    // New user form submission
+    $('#newUserForm').on('submit', function(e) {
+      e.preventDefault();
+      closeModal('newUserModal');
+      showSuccessToast('User added successfully!');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Venue ERP Internal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/internal.css">
+  <style>
+    .settings-sidebar {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .settings-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .settings-nav-item {
+      margin-bottom: 0.5rem;
+    }
+
+    .settings-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      color: var(--gray);
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .settings-nav-link:hover {
+      background: var(--light);
+      color: var(--dark);
+    }
+
+    .settings-nav-link.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .settings-nav-link i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .settings-content {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .settings-section {
+      display: none;
+    }
+
+    .settings-section.active {
+      display: block;
+    }
+
+    .settings-section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .settings-section-description {
+      color: var(--gray);
+      margin-bottom: 2rem;
+    }
+
+    .settings-group {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-group:last-child {
+      border-bottom: none;
+    }
+
+    .settings-group-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .settings-item-info {
+      flex: 1;
+    }
+
+    .settings-item-label {
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .settings-item-description {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 34px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: var(--success);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(24px);
+    }
+
+    .user-list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      background: var(--light);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--info));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+    }
+
+    .user-details {
+      flex: 1;
+    }
+
+    .user-name {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .user-role {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="panel-layout">
+    <!-- Sidebar Component -->
+    <div id="sidebarContainer"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header Component -->
+      <div id="headerContainer"></div>
+
+      <!-- Page Content -->
+      <div class="page-content">
+        <div class="container-fluid">
+
+          <div class="grid grid-4">
+            <!-- Settings Sidebar -->
+            <div class="settings-sidebar">
+              <h3 style="margin-bottom: 1.5rem; color: var(--dark);">Settings</h3>
+              <ul class="settings-nav">
+                <li class="settings-nav-item">
+                  <a class="settings-nav-link active" data-section="company">
+                    <i class="fas fa-building"></i>
+                    <span>Company Profile</span>
+                  </a>
+                </li>
+                <li class="settings-nav-item">
+                  <a class="settings-nav-link" data-section="users">
+                    <i class="fas fa-users"></i>
+                    <span>User Management</span>
+                  </a>
+                </li>
+                <li class="settings-nav-item">
+                  <a class="settings-nav-link" data-section="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                  </a>
+                </li>
+                <li class="settings-nav-item">
+                  <a class="settings-nav-link" data-section="email">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email Templates</span>
+                  </a>
+                </li>
+                <li class="settings-nav-item">
+                  <a class="settings-nav-link" data-section="financial">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Financial Settings</span>
+                  </a>
+                </li>
+                <li class="settings-nav-item">
+                  <a class="settings-nav-link" data-section="integrations">
+                    <i class="fas fa-plug"></i>
+                    <span>Integrations</span>
+                  </a>
+                </li>
+                <li class="settings-nav-item">
+                  <a class="settings-nav-link" data-section="backup">
+                    <i class="fas fa-database"></i>
+                    <span>Backup & Export</span>
+                  </a>
+                </li>
+                <li class="settings-nav-item">
+                  <a class="settings-nav-link" data-section="security">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Security</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Settings Content -->
+            <div class="settings-content" style="grid-column: span 3;">
+
+              <!-- Company Profile Section -->
+              <div class="settings-section active" id="section-company">
+                <h2 class="settings-section-title">Company Profile</h2>
+                <p class="settings-section-description">Manage your company information and branding</p>
+
+                <div class="settings-group">
+                  <div class="settings-group-title">Business Information</div>
+                  <div class="grid grid-2" style="gap: 1.5rem;">
+                    <div class="form-group">
+                      <label class="form-label">Company Name</label>
+                      <input type="text" class="form-control" value="Venue ERP Inc.">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Business Type</label>
+                      <select class="form-control">
+                        <option>Event Venue Management</option>
+                        <option>Hospitality</option>
+                        <option>Entertainment</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Phone</label>
+                      <input type="tel" class="form-control" value="+1 (555) 123-4567">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Email</label>
+                      <input type="email" class="form-control" value="info@venueerp.com">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                      <label class="form-label">Address</label>
+                      <textarea class="form-control" rows="2">123 Event Street, City, State 12345</textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-group">
+                  <div class="settings-group-title">Branding</div>
+                  <div class="form-group">
+                    <label class="form-label">Company Logo</label>
+                    <input type="file" class="form-control">
+                    <small style="color: var(--gray); display: block; margin-top: 0.5rem;">Recommended size: 200x200px, PNG or JPG</small>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary">
+                  <i class="fas fa-save"></i> Save Changes
+                </button>
+              </div>
+
+              <!-- User Management Section -->
+              <div class="settings-section" id="section-users">
+                <h2 class="settings-section-title">User Management</h2>
+                <p class="settings-section-description">Manage team members and their access levels</p>
+
+                <div style="margin-bottom: 1.5rem;">
+                  <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add New User
+                  </button>
+                </div>
+
+                <div class="settings-group">
+                  <div class="user-list-item">
+                    <div class="user-info">
+                      <div class="user-avatar">JD</div>
+                      <div class="user-details">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Sales Manager</div>
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                      <button class="btn btn-sm btn-secondary">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="user-list-item">
+                    <div class="user-info">
+                      <div class="user-avatar">SM</div>
+                      <div class="user-details">
+                        <div class="user-name">Sarah Miller</div>
+                        <div class="user-role">Front Desk</div>
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                      <button class="btn btn-sm btn-secondary">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="user-list-item">
+                    <div class="user-info">
+                      <div class="user-avatar">MC</div>
+                      <div class="user-details">
+                        <div class="user-name">Michael Chen</div>
+                        <div class="user-role">Sales Manager</div>
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                      <button class="btn btn-sm btn-secondary">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notifications Section -->
+              <div class="settings-section" id="section-notifications">
+                <h2 class="settings-section-title">Notification Preferences</h2>
+                <p class="settings-section-description">Configure how and when you receive notifications</p>
+
+                <div class="settings-group">
+                  <div class="settings-group-title">Email Notifications</div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">New Booking Alerts</div>
+                      <div class="settings-item-description">Receive email when new bookings are created</div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Payment Reminders</div>
+                      <div class="settings-item-description">Send reminders for pending payments</div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Daily Summary</div>
+                      <div class="settings-item-description">Receive daily summary of bookings and revenue</div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="settings-group">
+                  <div class="settings-group-title">System Notifications</div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Lead Notifications</div>
+                      <div class="settings-item-description">Alert when new leads are created</div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Booking Confirmations</div>
+                      <div class="settings-item-description">Notify when bookings are confirmed</div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary">
+                  <i class="fas fa-save"></i> Save Preferences
+                </button>
+              </div>
+
+              <!-- Email Templates Section -->
+              <div class="settings-section" id="section-email">
+                <h2 class="settings-section-title">Email Templates</h2>
+                <p class="settings-section-description">Customize automated email templates</p>
+
+                <div class="settings-group">
+                  <div class="form-group">
+                    <label class="form-label">Booking Confirmation Email</label>
+                    <textarea class="form-control" rows="6" placeholder="Dear {{customer_name}},
+
+Thank you for booking {{venue_name}} for {{event_date}}.
+
+Booking Details:
+- Venue: {{venue_name}}
+- Date: {{event_date}}
+- Guests: {{guest_count}}
+- Total: {{total_amount}}
+
+Best regards,
+{{company_name}}"></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Payment Reminder Email</label>
+                    <textarea class="form-control" rows="4" placeholder="Dear {{customer_name}},
+
+This is a reminder that payment for invoice {{invoice_id}} is due on {{due_date}}.
+
+Amount Due: {{amount_due}}
+
+Please contact us if you have any questions.
+
+Best regards,
+{{company_name}}"></textarea>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary">
+                  <i class="fas fa-save"></i> Save Templates
+                </button>
+              </div>
+
+              <!-- Financial Settings Section -->
+              <div class="settings-section" id="section-financial">
+                <h2 class="settings-section-title">Financial Settings</h2>
+                <p class="settings-section-description">Configure tax, currency, and payment settings</p>
+
+                <div class="settings-group">
+                  <div class="settings-group-title">Currency & Tax</div>
+                  <div class="grid grid-2" style="gap: 1.5rem;">
+                    <div class="form-group">
+                      <label class="form-label">Default Currency</label>
+                      <select class="form-control">
+                        <option>USD - US Dollar</option>
+                        <option>EUR - Euro</option>
+                        <option>GBP - British Pound</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Tax Rate (%)</label>
+                      <input type="number" class="form-control" value="8.5">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-group">
+                  <div class="settings-group-title">Payment Methods</div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Accept Credit Cards</div>
+                      <div class="settings-item-description">Visa, Mastercard, American Express</div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Accept Bank Transfers</div>
+                      <div class="settings-item-description">Direct bank transfers</div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Accept Cash Payments</div>
+                      <div class="settings-item-description">Cash on delivery</div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary">
+                  <i class="fas fa-save"></i> Save Settings
+                </button>
+              </div>
+
+              <!-- Integrations Section -->
+              <div class="settings-section" id="section-integrations">
+                <h2 class="settings-section-title">Integrations</h2>
+                <p class="settings-section-description">Connect with third-party services</p>
+
+                <div class="settings-group">
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Google Calendar Sync</div>
+                      <div class="settings-item-description">Sync bookings with Google Calendar</div>
+                    </div>
+                    <button class="btn btn-sm btn-primary">Connect</button>
+                  </div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Stripe Payment Gateway</div>
+                      <div class="settings-item-description">Process online payments via Stripe</div>
+                    </div>
+                    <button class="btn btn-sm btn-primary">Connect</button>
+                  </div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Mailchimp Marketing</div>
+                      <div class="settings-item-description">Sync customer emails with Mailchimp</div>
+                    </div>
+                    <button class="btn btn-sm btn-primary">Connect</button>
+                  </div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Slack Notifications</div>
+                      <div class="settings-item-description">Send notifications to Slack channels</div>
+                    </div>
+                    <button class="btn btn-sm btn-primary">Connect</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Backup & Export Section -->
+              <div class="settings-section" id="section-backup">
+                <h2 class="settings-section-title">Backup & Export</h2>
+                <p class="settings-section-description">Manage data backups and exports</p>
+
+                <div class="settings-group">
+                  <div class="settings-group-title">Automated Backups</div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Daily Automatic Backup</div>
+                      <div class="settings-item-description">Backup data every day at 2:00 AM</div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="settings-group">
+                  <div class="settings-group-title">Manual Export</div>
+                  <button class="btn btn-primary" style="margin-right: 1rem;">
+                    <i class="fas fa-download"></i> Export All Data (CSV)
+                  </button>
+                  <button class="btn btn-secondary">
+                    <i class="fas fa-database"></i> Create Backup Now
+                  </button>
+                </div>
+              </div>
+
+              <!-- Security Section -->
+              <div class="settings-section" id="section-security">
+                <h2 class="settings-section-title">Security Settings</h2>
+                <p class="settings-section-description">Manage security and access controls</p>
+
+                <div class="settings-group">
+                  <div class="settings-group-title">Password & Authentication</div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Two-Factor Authentication</div>
+                      <div class="settings-item-description">Require 2FA for all user logins</div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="settings-item">
+                    <div class="settings-item-info">
+                      <div class="settings-item-label">Session Timeout</div>
+                      <div class="settings-item-description">Auto logout after 30 minutes of inactivity</div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="settings-group">
+                  <div class="settings-group-title">Change Password</div>
+                  <div class="grid grid-2" style="gap: 1.5rem;">
+                    <div class="form-group">
+                      <label class="form-label">Current Password</label>
+                      <input type="password" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">New Password</label>
+                      <input type="password" class="form-control">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                      <label class="form-label">Confirm New Password</label>
+                      <input type="password" class="form-control">
+                    </div>
+                  </div>
+                  <button class="btn btn-primary">
+                    <i class="fas fa-key"></i> Update Password
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="js/roles-config.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/modals.js"></script>
+  <script src="js/modals-extended.js"></script>
+  <script src="js/internal.js"></script>
+  <script>
+    $(document).ready(async function() {
+      // CRITICAL: Check page access first - security fix
+      if (!RoleManager.requirePageAccess()) {
+        return; // Stop execution if unauthorized
+      }
+
+
+      // ========== LOAD COMPONENTS ==========
+      // Components loaded via initializePage()
+      await initializePage(
+      );
+
+      // Set page info
+      PageManager.setTitle('System Settings');
+      PageManager.setActiveNav('settings');
+
+      // Settings navigation
+      $('.settings-nav-link').on('click', function() {
+        const section = $(this).data('section');
+
+        // Update active nav
+        $('.settings-nav-link').removeClass('active');
+        $(this).addClass('active');
+
+        // Show corresponding section
+        $('.settings-section').removeClass('active');
+        $(`#section-${section}`).addClass('active');
+      });
+
+    });
+  </script>
+
+</body>
+</html>

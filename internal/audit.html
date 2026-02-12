@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Logs - Venue ERP Internal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/internal.css">
+</head>
+<body>
+
+  <div class="panel-layout">
+    <div id="sidebarContainer"></div>
+
+    <main class="main-content">
+      <div id="headerContainer"></div>
+
+      <div class="page-content">
+        <div class="container-fluid">
+
+          <!-- Stats Widgets -->
+          <div class="widget-grid">
+            <div class="stat-widget">
+              <div class="stat-icon primary">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-label">Total Activities</div>
+                <div class="stat-value">1,248</div>
+                <div class="stat-change positive">
+                  <i class="fas fa-arrow-up"></i> This month
+                </div>
+              </div>
+            </div>
+            <div class="stat-widget">
+              <div class="stat-icon success">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-label">Successful Actions</div>
+                <div class="stat-value">1,186</div>
+                <div class="stat-change positive">
+                  <i class="fas fa-arrow-up"></i> 95% success rate
+                </div>
+              </div>
+            </div>
+            <div class="stat-widget">
+              <div class="stat-icon warning">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-label">Failed Actions</div>
+                <div class="stat-value">42</div>
+                <div class="stat-change negative">
+                  <i class="fas fa-arrow-up"></i> Requires review
+                </div>
+              </div>
+            </div>
+            <div class="stat-widget">
+              <div class="stat-icon danger">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-label">Security Events</div>
+                <div class="stat-value">8</div>
+                <div class="stat-change neutral">
+                  <i class="fas fa-minus"></i> All resolved
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="card" style="margin-bottom: 2rem;">
+            <div class="card-body">
+              <div class="grid grid-4">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">User</label>
+                  <select class="form-control">
+                    <option value="">All Users</option>
+                    <option>John Doe</option>
+                    <option>Sarah Miller</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Action Type</label>
+                  <select class="form-control">
+                    <option value="">All Actions</option>
+                    <option value="create">Create</option>
+                    <option value="update">Update</option>
+                    <option value="delete">Delete</option>
+                    <option value="login">Login</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Date Range</label>
+                  <input type="date" class="form-control">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" style="opacity: 0;">Actions</label>
+                  <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-primary" style="flex: 1;">
+                      <i class="fas fa-filter"></i> Filter
+                    </button>
+                    <button class="btn btn-secondary">
+                      <i class="fas fa-download"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Audit Logs Table -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Activity Logs (1,248)</h3>
+              <div style="display: flex; gap: 0.75rem;">
+                <button class="btn btn-sm btn-secondary">
+                  <i class="fas fa-download"></i> Export Logs
+                </button>
+              </div>
+            </div>
+            <div class="card-body" style="padding: 0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>Resource</th>
+                    <th>Details</th>
+                    <th>Status</th>
+                    <th>IP Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Dec 12, 2024 14:32</td>
+                    <td>John Doe</td>
+                    <td><span class="badge badge-primary">CREATE</span></td>
+                    <td>Booking #BK-234</td>
+                    <td>Created new booking for Wedding</td>
+                    <td><span class="badge badge-success">Success</span></td>
+                    <td>192.168.1.10</td>
+                  </tr>
+                  <tr>
+                    <td>Dec 12, 2024 14:15</td>
+                    <td>Sarah Miller</td>
+                    <td><span class="badge badge-warning">UPDATE</span></td>
+                    <td>User #001</td>
+                    <td>Updated user role</td>
+                    <td><span class="badge badge-success">Success</span></td>
+                    <td>192.168.1.15</td>
+                  </tr>
+                  <tr>
+                    <td>Dec 12, 2024 13:45</td>
+                    <td>Mike Thompson</td>
+                    <td><span class="badge badge-danger">DELETE</span></td>
+                    <td>Lead #LD-102</td>
+                    <td>Deleted lead entry</td>
+                    <td><span class="badge badge-success">Success</span></td>
+                    <td>192.168.1.22</td>
+                  </tr>
+                  <tr>
+                    <td>Dec 12, 2024 13:20</td>
+                    <td>Unknown</td>
+                    <td><span class="badge badge-info">LOGIN</span></td>
+                    <td>Authentication</td>
+                    <td>Failed login attempt</td>
+                    <td><span class="badge badge-danger">Failed</span></td>
+                    <td>203.45.67.89</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="color: var(--gray); font-size: 0.9rem;">
+                  Showing 4 of 1,248 logs
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                  <button class="btn btn-sm btn-secondary">Previous</button>
+                  <button class="btn btn-sm btn-primary">1</button>
+                  <button class="btn btn-sm btn-secondary">2</button>
+                  <button class="btn btn-sm btn-secondary">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="js/roles-config.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/internal.js"></script>
+  <script>
+    $(document).ready(async function() {
+      // CRITICAL: Check page access first - security fix
+      if (!RoleManager.requirePageAccess()) {
+        return; // Stop execution if unauthorized
+      }
+
+      await initializePage('Audit Logs');
+    });
+  </script>
+
+</body>
+</html>

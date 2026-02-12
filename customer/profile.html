@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Customer Panel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/customer.css">
+</head>
+<body>
+
+  <div class="panel-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../index.html" class="sidebar-logo">
+          <i class="fas fa-building"></i>
+          <span>Venue ERP</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <ul>
+            <li class="nav-item">
+              <a href="dashboard.html" class="nav-link">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="bookings.html" class="nav-link">
+                <i class="fas fa-calendar-check"></i>
+                <span>My Bookings</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="enquiries.html" class="nav-link">
+                <i class="fas fa-envelope"></i>
+                <span>Enquiries</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Explore</div>
+          <ul>
+            <li class="nav-item">
+              <a href="browse-venues.html" class="nav-link">
+                <i class="fas fa-search"></i>
+                <span>Browse Venues</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="favorites.html" class="nav-link">
+                <i class="fas fa-heart"></i>
+                <span>Favorites</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Account</div>
+          <ul>
+            <li class="nav-item">
+              <a href="profile.html" class="nav-link active">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="settings.html" class="nav-link">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" id="logoutBtn" class="nav-link" style="color: var(--danger);">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Header -->
+      <header class="panel-header">
+        <div class="header-left">
+          <h1 class="page-title">My Profile</h1>
+        </div>
+
+        <div class="header-right">
+          <div class="header-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search venues...">
+          </div>
+
+          <div class="header-actions">
+            <div class="header-icon">
+              <i class="fas fa-bell"></i>
+              <span class="badge">3</span>
+            </div>
+
+            <div class="user-menu">
+              <div class="user-avatar" id="userAvatar">U</div>
+              <div class="user-info">
+                <div class="user-name" id="userName">User</div>
+                <div class="user-role">Customer</div>
+              </div>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <div class="page-content">
+        <div class="container-fluid">
+
+          <div class="grid grid-3">
+
+            <!-- Profile Card -->
+            <div style="grid-column: span 1;">
+              <div class="card">
+                <div class="card-body" style="text-align: center; padding: 2rem;">
+                  <div style="width: 120px; height: 120px; margin: 0 auto 1.5rem; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 700;" id="profileAvatar">
+                    U
+                  </div>
+                  <h3 style="margin-bottom: 0.5rem;" id="profileName">User Name</h3>
+                  <p style="color: var(--gray); margin-bottom: 1.5rem;" id="profileEmail">user@example.com</p>
+                  <button class="btn btn-secondary" style="width: 100%;">
+                    <i class="fas fa-camera"></i> Change Photo
+                  </button>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Account Stats</h3>
+                </div>
+                <div class="card-body">
+                  <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                      <span style="color: var(--gray);">Member Since</span>
+                      <strong>Jan 2026</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                      <span style="color: var(--gray);">Total Bookings</span>
+                      <strong>12</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                      <span style="color: var(--gray);">Total Spent</span>
+                      <strong>$28,900</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Profile Form -->
+            <div style="grid-column: span 2;">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Personal Information</h3>
+                </div>
+                <div class="card-body">
+                  <form id="profileForm">
+                    <div class="grid grid-2">
+                      <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" value="John Doe">
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" value="john.doe@example.com">
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="Enter your phone" value="+1 234 567 8900">
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" value="1990-01-15">
+                      </div>
+
+                      <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Address</label>
+                        <input type="text" class="form-control" id="address" placeholder="Enter your address" value="123 Main Street, New York, NY 10001">
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" placeholder="Enter your city" value="New York">
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label">Country</label>
+                        <select class="form-control" id="country">
+                          <option>United States</option>
+                          <option>Canada</option>
+                          <option>United Kingdom</option>
+                          <option>Australia</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Bio</label>
+                        <textarea class="form-control" id="bio" placeholder="Tell us about yourself">Event planner and venue enthusiast with 5+ years of experience organizing corporate and social events.</textarea>
+                      </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                      <button type="button" class="btn btn-secondary">Cancel</button>
+                      <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Change Password</h3>
+                </div>
+                <div class="card-body">
+                  <form id="passwordForm">
+                    <div class="grid grid-2">
+                      <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Current Password</label>
+                        <input type="password" class="form-control" placeholder="Enter current password">
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label">New Password</label>
+                        <input type="password" class="form-control" placeholder="Enter new password">
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" placeholder="Confirm new password">
+                      </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                      <button type="button" class="btn btn-secondary">Cancel</button>
+                      <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-lock"></i> Update Password
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="js/customer.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Load user data from auth
+      const authData = localStorage.getItem('authData');
+      if (authData) {
+        const user = JSON.parse(authData).user;
+        if (user.name) {
+          $('#profileName').text(user.name);
+          $('#fullName').val(user.name);
+          const initial = user.name.charAt(0).toUpperCase();
+          $('#profileAvatar').text(initial);
+        }
+        if (user.email) {
+          $('#profileEmail').text(user.email);
+          $('#email').val(user.email);
+        }
+        if (user.phone) {
+          $('#phone').val(user.phone);
+        }
+      }
+
+      // Profile form submit
+      $('#profileForm').on('submit', function(e) {
+        e.preventDefault();
+        alert('Profile updated successfully!');
+      });
+
+      // Password form submit
+      $('#passwordForm').on('submit', function(e) {
+        e.preventDefault();
+        alert('Password changed successfully!');
+        $(this)[0].reset();
+      });
+    });
+  </script>
+
+</body>
+</html>

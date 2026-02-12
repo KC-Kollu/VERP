@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check Availability - Venue ERP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <i class="fas fa-building"></i>
+        <span>Venue ERP</span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="venues.html" class="nav-link">Venues</a></li>
+        <li><a href="availability.html" class="nav-link active">Check Availability</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="#" class="nav-link" onclick="openModal('loginModal'); return false;"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        <li><a href="#" class="btn btn-primary" onclick="openModal('registerModal'); return false;">Sign Up</a></li>
+      </ul>
+      <button class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <section class="section" style="margin-top: 5rem;">
+    <div class="container" style="max-width: 800px;">
+
+      <div class="section-header">
+        <h1 class="section-title">Check Venue Availability</h1>
+        <p class="section-subtitle">Enter your event details to check if your preferred venue is available</p>
+      </div>
+
+      <div class="card" style="padding: 2rem;">
+        <form id="availabilityForm">
+
+          <div class="form-group">
+            <label class="form-label">Select Venue *</label>
+            <select class="form-control form-select" required>
+              <option value="">Choose a venue...</option>
+              <option value="1">Grand Ballroom (500 capacity)</option>
+              <option value="2">Executive Conference Hall (200 capacity)</option>
+              <option value="3">Garden Lawn (300 capacity)</option>
+              <option value="4">Royal Banquet Hall (350 capacity)</option>
+              <option value="5">Board Meeting Room (50 capacity)</option>
+              <option value="6">Rooftop Terrace (150 capacity)</option>
+            </select>
+          </div>
+
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label class="form-label">Event Date *</label>
+              <input type="date" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Event Type *</label>
+              <select class="form-control form-select" required>
+                <option value="">Select event type...</option>
+                <option value="wedding">Wedding</option>
+                <option value="corporate">Corporate Event</option>
+                <option value="conference">Conference</option>
+                <option value="birthday">Birthday Party</option>
+                <option value="social">Social Gathering</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label class="form-label">Start Time *</label>
+              <input type="time" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">End Time *</label>
+              <input type="time" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Expected Guest Count *</label>
+            <input type="number" class="form-control" min="1" placeholder="Enter number of guests" required>
+          </div>
+
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label class="form-label">Your Name</label>
+              <input type="text" class="form-control" placeholder="Enter your name">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" placeholder="+91 98765 43210">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+            <i class="fas fa-search"></i> Check Availability
+          </button>
+
+        </form>
+      </div>
+
+      <!-- Result -->
+      <div id="availabilityResult" style="display: none; margin-top: 2rem;">
+        <div id="resultAvailable" class="alert alert-success" style="display: none;">
+          <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+          <h3 style="margin-bottom: 0.5rem;">Venue Available!</h3>
+          <p>The selected venue is available for your event date and time.</p>
+          <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center;">
+            <a href="enquiry.html" class="btn btn-primary">Send Enquiry</a>
+            <a href="contact.html" class="btn btn-outline">Contact Us</a>
+          </div>
+        </div>
+
+        <div id="resultNotAvailable" class="alert alert-error" style="display: none;">
+          <i class="fas fa-times-circle" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+          <h3 style="margin-bottom: 0.5rem;">Not Available</h3>
+          <p>Sorry, the selected venue is not available for the chosen date and time.</p>
+          <div class="alert alert-info" style="margin-top: 1rem;">
+            <strong>Suggested Alternatives:</strong>
+            <ul style="margin: 0.5rem 0 0 1.5rem;">
+              <li>Try a different time slot</li>
+              <li>Choose another date</li>
+              <li>Explore alternative venues</li>
+            </ul>
+          </div>
+          <a href="enquiry.html" class="btn btn-primary" style="margin-top: 1rem;">Contact Us for Alternatives</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 class="footer-title"><i class="fas fa-building"></i> Venue ERP</h3>
+          <p class="footer-text">Your trusted partner for venue management and event planning.</p>
+        </div>
+        <div>
+          <h4 class="footer-title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="venues.html">Venues</a></li>
+            <li><a href="availability.html">Check Availability</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="enquiry.html"><i class="fas fa-paper-plane"></i> Send Enquiry</a></li>
+            <li><a href="customer/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Services</h4>
+          <ul class="footer-links">
+            <li><a href="venues.html?type=wedding">Weddings</a></li>
+            <li><a href="venues.html?type=corporate">Corporate Events</a></li>
+            <li><a href="venues.html?type=conference">Conferences</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Contact Us</h4>
+          <ul class="footer-links">
+            <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+            <li><i class="fas fa-envelope"></i> info@venueerp.com</li>
+            <li><i class="fas fa-clock"></i> Mon - Sat: 9AM - 6PM</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Venue ERP. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Auth Modals -->
+  <div id="authModalsContainer"></div>
+
+  <!-- Load Auth Modals -->
+  <script>
+    $(document).ready(function() {
+      $("#authModalsContainer").load("includes/auth-modals.html");
+    });
+  </script>
+
+</body>
+</html>

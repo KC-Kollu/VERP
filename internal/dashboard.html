@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Venue ERP Internal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/internal.css">
+</head>
+<body>
+
+  <div class="panel-layout">
+    <!-- Sidebar Component -->
+    <div id="sidebarContainer"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header Component -->
+      <div id="headerContainer"></div>
+
+      <!-- Page Content -->
+      <div class="page-content">
+        <div class="container-fluid">
+
+          <!-- Stats Widgets -->
+          <div class="widget-grid" id="statsWidgets"></div>
+
+          <!-- Main Grid -->
+          <div class="grid grid-3">
+
+            <!-- Recent Bookings -->
+            <div class="card" style="grid-column: span 2;">
+              <div class="card-header">
+                <h3 class="card-title">Recent Bookings</h3>
+                <button class="btn btn-sm btn-primary" onclick="openModal('newBookingModal')">
+                  <i class="fas fa-plus"></i> New Booking
+                </button>
+              </div>
+              <div class="card-body" style="padding: 0;" id="recentBookingsTable"></div>
+            </div>
+
+            <!-- Calendar Widget -->
+            <div id="calendarContainer"></div>
+
+          </div>
+
+          <!-- Secondary Grid -->
+          <div class="grid grid-2">
+
+            <!-- Recent Leads -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Recent Leads</h3>
+                <a href="leads.html" class="btn btn-sm btn-secondary">View All</a>
+              </div>
+              <div class="card-body" style="padding: 0;" id="recentLeadsTable"></div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Quick Stats</h3>
+              </div>
+              <div class="card-body" id="quickStats"></div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- New Booking Modal (Component) -->
+  <div id="modalContainer"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="js/roles-config.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/modals.js"></script>
+  <script src="js/modals-extended.js"></script>
+  <script src="js/internal.js"></script>
+  <script>
+    $(document).ready(async function() {
+      // CRITICAL: Check page access first - security fix
+      if (!RoleManager.requirePageAccess()) {
+        return; // Stop execution if unauthorized
+      }
+
+      // ========== LOAD COMPONENTS ==========
+      await initializePage('Dashboard');
+
+      // Load additional components
+      await ComponentLoader.load('calendar-widget', 'calendarContainer');
+
+      // Set page info
+      PageManager.setTitle('Dashboard');
+      PageManager.setActiveNav('dashboard');
+
+      // Set role-based quick actions
+      const quickActions = RoleManager.getQuickActions();
+      PageManager.setQuickActions(quickActions);
+
+      // ========== RENDER ROLE-BASED WIDGETS ==========
+      const widgets = RoleManager.getDashboardWidgets();
+
+      WidgetBuilder.renderWidgets(widgets, 'statsWidgets');
+
+      // ========== HARDCODED FALLBACK (remove above and use this if needed) ==========
+      /*
+      const widgetsOld = [
+        {
+          label: 'Total Bookings',
+          value: '156',
+          change: '+12 this month',
+          icon: 'fas fa-calendar-check',
+          iconClass: 'primary',
+          changeClass: 'positive'
+        },
+        {
+          label: 'Revenue',
+          value: '$48,500',
+          change: '+18.2% from last month',
+          icon: 'fas fa-dollar-sign',
+          iconClass: 'success',
+          changeClass: 'positive'
+        },
+        {
+          label: 'Active Leads',
+          value: '34',
+          change: '+8 new leads',
+          icon: 'fas fa-user-plus',
+          iconClass: 'warning',
+          changeClass: 'positive'
+        },
+        {
+          label: 'Pending Payments',
+          value: '$12,300',
+          change: '15 invoices',
+          icon: 'fas fa-clock',
+          iconClass: 'danger',
+          changeClass: 'negative'
+        }
+      ];
+      */
+      // WidgetBuilder.renderWidgets(widgetsOld, 'statsWidgets');
+
+      // ========== RENDER RECENT BOOKINGS TABLE ==========
+      const bookingsData = [
+        {
+          id: 'BK-1001',
+          customer: 'John Smith',
+          venue: 'Grand Ballroom',
+          date: '2026-02-25',
+          amount: 5000,
+          status: 'Confirmed'
+        },
+        {
+          id: 'BK-1002',
+          customer: 'Sarah Johnson',
+          venue: 'Conference Hall',
+          date: '2026-03-10',
+          amount: 1800,
+          status: 'Pending'
+        },
+        {
+          id: 'BK-1003',
+          customer: 'Mike Davis',
+          venue: 'Garden Lawn',
+          date: '2026-03-15',
+          amount: 2500,
+          status: 'Confirmed'
+        },
+        {
+          id: 'BK-1004',
+          customer: 'Emily Wilson',
+          venue: 'Rooftop Terrace',
+          date: '2026-04-01',
+          amount: 2200,
+          status: 'Pending'
+        }
+      ];
+
+      TableBuilder.render({
+        columns: [
+          { label: 'Booking ID', field: 'id' },
+          { label: 'Customer', field: 'customer' },
+          { label: 'Venue', field: 'venue' },
+          {
+            label: 'Date',
+            field: 'date',
+            format: (val) => Formatters.date(val)
+          },
+          {
+            label: 'Amount',
+            field: 'amount',
+            format: (val) => Formatters.currency(val)
+          },
+          {
+            label: 'Status',
+            field: 'status',
+            format: (val) => Formatters.badge(val)
+          }
+        ],
+        data: bookingsData,
+        actions: [
+          {
+            label: 'View',
+            icon: 'fas fa-eye',
+            class: 'btn-secondary',
+            onClick: 'viewBooking'
+          },
+          {
+            label: 'Edit',
+            icon: 'fas fa-edit',
+            class: 'btn-primary',
+            onClick: 'editBooking'
+          }
+        ]
+      }, 'recentBookingsTable');
+
+      // ========== RENDER RECENT LEADS TABLE ==========
+      const leadsData = [
+        {
+          id: 'L-501',
+          name: 'Alice Brown',
+          phone: '5551234567',
+          venue: 'Grand Ballroom',
+          status: 'New'
+        },
+        {
+          id: 'L-502',
+          name: 'Bob Taylor',
+          phone: '5559876543',
+          venue: 'Garden Lawn',
+          status: 'Contacted'
+        },
+        {
+          id: 'L-503',
+          name: 'Carol White',
+          phone: '5555551234',
+          venue: 'Conference Hall',
+          status: 'Quoted'
+        }
+      ];
+
+      TableBuilder.render({
+        columns: [
+          { label: 'Lead ID', field: 'id' },
+          { label: 'Name', field: 'name' },
+          {
+            label: 'Phone',
+            field: 'phone',
+            format: (val) => Formatters.phone(val)
+          },
+          { label: 'Venue Interest', field: 'venue' },
+          {
+            label: 'Status',
+            field: 'status',
+            format: (val) => {
+              const statusMap = {
+                'New': 'badge-warning',
+                'Contacted': 'badge-info',
+                'Quoted': 'badge-primary'
+              };
+              return `<span class="badge ${statusMap[val]}">${val}</span>`;
+            }
+          }
+        ],
+        data: leadsData
+      }, 'recentLeadsTable');
+
+      // ========== RENDER QUICK STATS ==========
+      $('#quickStats').html(`
+        <div style="display: grid; gap: 1rem;">
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--gray);">Occupancy Rate</span>
+            <strong style="color: var(--success);">78%</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--gray);">Avg. Booking Value</span>
+            <strong>${Formatters.currency(3250)}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--gray);">Conversion Rate</span>
+            <strong style="color: var(--primary);">42%</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--gray);">Customer Satisfaction</span>
+            <strong style="color: var(--success);">4.8/5.0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0;">
+            <span style="color: var(--gray);">Repeat Customers</span>
+            <strong style="color: var(--info);">65%</strong>
+          </div>
+        </div>
+      `);
+
+      // ========== INITIALIZE CALENDAR ==========
+      calendar = new CalendarManager('calendarContainer');
+
+      // Add sample events
+      calendar.addEvent('2026-02-15', 'Grand Ballroom - Wedding', 'confirmed');
+      calendar.addEvent('2026-02-20', 'Conference Hall - Corporate', 'pending');
+      calendar.addEvent('2026-02-25', 'Garden Lawn - Birthday', 'confirmed');
+
+      calendar.renderCalendar();
+
+      // ========== CREATE MODALS ==========
+      const newBookingModal = ModalManager.create({
+        id: 'newBookingModal',
+        title: 'Create New Booking',
+        size: 'large',
+        body: `
+          <form id="newBookingForm">
+            <div class="grid grid-2">
+              <div class="form-group">
+                <label class="form-label">Customer Name</label>
+                <input type="text" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Venue</label>
+                <select class="form-control" required>
+                  <option value="">Select Venue</option>
+                  <option>Grand Ballroom</option>
+                  <option>Conference Hall</option>
+                  <option>Garden Lawn</option>
+                  <option>Rooftop Terrace</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Event Date</label>
+                <input type="date" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Event Type</label>
+                <select class="form-control" required>
+                  <option value="">Select Type</option>
+                  <option>Wedding</option>
+                  <option>Corporate</option>
+                  <option>Birthday</option>
+                  <option>Conference</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Expected Guests</label>
+                <input type="number" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Budget</label>
+                <input type="number" class="form-control" required>
+              </div>
+              <div class="form-group" style="grid-column: span 2;">
+                <label class="form-label">Special Requirements</label>
+                <textarea class="form-control" rows="3"></textarea>
+              </div>
+            </div>
+          </form>
+        `,
+        footer: `
+          <button class="btn btn-secondary" onclick="ModalManager.close('newBookingModal')">Cancel</button>
+          <button class="btn btn-primary" onclick="submitNewBooking()">
+            <i class="fas fa-save"></i> Create Booking
+          </button>
+        `
+      });
+
+      $('#modalContainer').html(newBookingModal);
+
+    });
+
+    // ========== ACTION FUNCTIONS ==========
+    function viewBooking(id) {
+      console.log('View booking:', id);
+      showBookingDetail(id);
+    }
+
+    function editBooking(id) {
+      console.log('Edit booking:', id);
+      showSuccessToast('Edit booking feature coming soon');
+    }
+
+    function submitNewBooking() {
+      const form = $('#newBookingForm')[0];
+      if (form.checkValidity()) {
+        showSuccessToast('Booking created successfully!');
+        closeModal('newBookingModal');
+        form.reset();
+      } else {
+        form.reportValidity();
+      }
+    }
+  </script>
+
+</body>
+</html>

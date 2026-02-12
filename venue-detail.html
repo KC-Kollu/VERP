@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venue Details - Venue ERP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <i class="fas fa-building"></i>
+        <span>Venue ERP</span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="venues.html" class="nav-link">Venues</a></li>
+        <li><a href="availability.html" class="nav-link">Check Availability</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="#" class="nav-link" onclick="openModal('loginModal'); return false;"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        <li><a href="#" class="btn btn-primary" onclick="openModal('registerModal'); return false;">Sign Up</a></li>
+      </ul>
+      <button class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <section class="section" style="margin-top: 5rem;">
+    <div class="container">
+
+      <!-- Gallery -->
+      <div style="margin-bottom: 3rem;">
+        <img src="https://placehold.co/1200x600/3498db/white?text=Grand+Ballroom" alt="Grand Ballroom" style="width: 100%; height: 500px; object-fit: cover; border-radius: var(--radius-lg);">
+      </div>
+
+      <div class="grid grid-3" style="gap: 3rem;">
+
+        <!-- Main Content -->
+        <div style="grid-column: span 2;">
+
+          <div style="margin-bottom: 1rem;">
+            <span class="badge badge-primary">Wedding Venue</span>
+          </div>
+
+          <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Grand Ballroom</h1>
+
+          <div style="display: flex; gap: 2rem; margin-bottom: 2rem; color: var(--gray);">
+            <span><i class="fas fa-map-marker-alt"></i> Central Business District</span>
+            <span><i class="fas fa-users"></i> Up to 500 Guests</span>
+            <span><i class="fas fa-expand"></i> 5000 sq ft</span>
+          </div>
+
+          <!-- Description -->
+          <div style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.75rem; margin-bottom: 1rem;">About This Venue</h2>
+            <p style="line-height: 1.8; color: var(--gray);">
+              Our Grand Ballroom is an elegant and sophisticated space perfect for hosting weddings, corporate galas, and large celebrations. With its stunning crystal chandeliers, high ceilings, and luxurious decor, this venue creates an unforgettable ambiance for your special event.
+            </p>
+            <p style="line-height: 1.8; color: var(--gray);">
+              The ballroom features state-of-the-art audio-visual equipment, customizable lighting options, and a spacious dance floor. Our dedicated event team will work with you to ensure every detail is perfect, from setup to breakdown.
+            </p>
+          </div>
+
+          <!-- Amenities -->
+          <div style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.75rem; margin-bottom: 1.5rem;">Amenities & Features</h2>
+            <div class="grid grid-2" style="gap: 1rem;">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>Central Air Conditioning</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>Professional Sound System</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>LED Stage Lighting</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>Projector & Screen</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>Complimentary WiFi</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>Valet Parking Available</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>Catering Kitchen</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>Bridal Suite Available</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>Wheelchair Accessible</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>24/7 Security</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>Generator Backup</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.25rem;"></i>
+                <span>Green Room</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pricing -->
+          <div style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.75rem; margin-bottom: 1.5rem;">Pricing</h2>
+            <div class="card" style="padding: 2rem; background: var(--light);">
+              <div class="grid grid-3" style="gap: 2rem;">
+                <div>
+                  <div style="color: var(--gray); margin-bottom: 0.5rem;">Weekday Rate</div>
+                  <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">₹1,25,000</div>
+                </div>
+                <div>
+                  <div style="color: var(--gray); margin-bottom: 0.5rem;">Weekend Rate</div>
+                  <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">₹1,50,000</div>
+                </div>
+                <div>
+                  <div style="color: var(--gray); margin-bottom: 0.5rem;">Peak Season</div>
+                  <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">₹1,75,000</div>
+                </div>
+              </div>
+              <p style="margin-top: 1.5rem; color: var(--gray); font-size: 0.875rem;">
+                * Prices are subject to taxes. Package customization available. Contact us for detailed quotation.
+              </p>
+            </div>
+          </div>
+
+          <!-- Additional Images -->
+          <div style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.75rem; margin-bottom: 1.5rem;">Gallery</h2>
+            <div class="grid grid-3" style="gap: 1rem;">
+              <img src="https://placehold.co/400x300/9b59b6/white?text=Gallery+1" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius);">
+              <img src="https://placehold.co/400x300/e74c3c/white?text=Gallery+2" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius);">
+              <img src="https://placehold.co/400x300/27ae60/white?text=Gallery+3" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius);">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sidebar -->
+        <div>
+
+          <!-- Booking Card -->
+          <div class="card" style="padding: 2rem; position: sticky; top: 100px;">
+            <div style="font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem;">
+              Starting from<br>₹1,50,000
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+              <a href="availability.html?venue=1" class="btn btn-primary" style="width: 100%; justify-content: center; display: flex; align-items: center;">
+                <i class="fas fa-calendar-check"></i> Check Availability
+              </a>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+              <a href="enquiry.html?venue=1" class="btn btn-outline" style="width: 100%; justify-content: center; display: flex; align-items: center;">
+                <i class="fas fa-paper-plane"></i> Send Enquiry
+              </a>
+            </div>
+
+            <div style="padding-top: 1.5rem; border-top: 1px solid var(--gray-light);">
+              <h4 style="font-size: 1.125rem; margin-bottom: 1rem;">Contact Information</h4>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; color: var(--gray);">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <i class="fas fa-phone" style="color: var(--primary);"></i>
+                  <a href="tel:+919876543210" style="color: inherit;">+91 98765 43210</a>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <i class="fas fa-envelope" style="color: var(--primary);"></i>
+                  <a href="mailto:info@venueerp.com" style="color: inherit;">info@venueerp.com</a>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <i class="fas fa-clock" style="color: var(--primary);"></i>
+                  <span>Mon - Sat: 9AM - 6PM</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-light);">
+              <h4 style="font-size: 1.125rem; margin-bottom: 1rem;">Share This Venue</h4>
+              <div style="display: flex; gap: 0.75rem;">
+                <a href="#" style="width: 40px; height: 40px; background: #3b5998; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" style="width: 40px; height: 40px; background: #1da1f2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" style="width: 40px; height: 40px; background: #25d366; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="#" style="width: 40px; height: 40px; background: #0077b5; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Similar Venues -->
+  <section class="section bg-light">
+    <div class="container">
+      <h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center;">Similar Venues</h2>
+      <div class="grid grid-3">
+
+        <div class="card">
+          <img src="https://placehold.co/400x250/9b59b6/white?text=Royal+Banquet" alt="Banquet Hall" class="card-img">
+          <div class="card-body">
+            <h3 class="card-title">Royal Banquet Hall</h3>
+            <div class="card-meta">
+              <span><i class="fas fa-users"></i> 350 Guests</span>
+              <span><i class="fas fa-expand"></i> 4000 sq ft</span>
+            </div>
+            <p class="card-text">Luxurious banquet hall with chandeliers and premium setup.</p>
+            <div class="card-footer">
+              <span class="card-price price">120000</span>
+              <a href="venue-detail.html?id=4" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://placehold.co/400x250/27ae60/white?text=Garden+Lawn" alt="Garden Lawn" class="card-img">
+          <div class="card-body">
+            <h3 class="card-title">Garden Lawn</h3>
+            <div class="card-meta">
+              <span><i class="fas fa-users"></i> 300 Guests</span>
+              <span><i class="fas fa-expand"></i> 8000 sq ft</span>
+            </div>
+            <p class="card-text">Beautiful outdoor space for weddings and receptions.</p>
+            <div class="card-footer">
+              <span class="card-price price">100000</span>
+              <a href="venue-detail.html?id=3" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://placehold.co/400x250/16a085/white?text=Rooftop+Terrace" alt="Rooftop" class="card-img">
+          <div class="card-body">
+            <h3 class="card-title">Rooftop Terrace</h3>
+            <div class="card-meta">
+              <span><i class="fas fa-users"></i> 150 Guests</span>
+              <span><i class="fas fa-expand"></i> 3000 sq ft</span>
+            </div>
+            <p class="card-text">Stunning rooftop with panoramic city views.</p>
+            <div class="card-footer">
+              <span class="card-price price">90000</span>
+              <a href="venue-detail.html?id=6" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 class="footer-title"><i class="fas fa-building"></i> Venue ERP</h3>
+          <p class="footer-text">Your trusted partner for venue management and event planning.</p>
+        </div>
+        <div>
+          <h4 class="footer-title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="venues.html">Venues</a></li>
+            <li><a href="availability.html">Check Availability</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="enquiry.html"><i class="fas fa-paper-plane"></i> Send Enquiry</a></li>
+            <li><a href="customer/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Services</h4>
+          <ul class="footer-links">
+            <li><a href="venues.html?type=wedding">Weddings</a></li>
+            <li><a href="venues.html?type=corporate">Corporate Events</a></li>
+            <li><a href="venues.html?type=conference">Conferences</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Contact Us</h4>
+          <ul class="footer-links">
+            <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+            <li><i class="fas fa-envelope"></i> info@venueerp.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Venue ERP. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Auth Modals -->
+  <div id="authModalsContainer"></div>
+
+  <!-- Load Auth Modals -->
+  <script>
+    $(document).ready(function() {
+      $("#authModalsContainer").load("includes/auth-modals.html");
+    });
+  </script>
+
+</body>
+</html>

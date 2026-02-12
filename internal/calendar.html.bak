@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar - Venue ERP Internal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/internal.css">
+  <style>
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .calendar-nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .calendar-view-toggle {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .full-calendar {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .calendar-month-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .calendar-month-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .calendar-month-nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .calendar-weekday {
+      text-align: center;
+      font-weight: 600;
+      color: var(--gray);
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.5rem;
+    }
+
+    .calendar-day-cell {
+      min-height: 100px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .calendar-day-cell:hover {
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    }
+
+    .calendar-day-cell.other-month {
+      opacity: 0.3;
+    }
+
+    .calendar-day-cell.today {
+      background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+      border-color: var(--primary);
+    }
+
+    .calendar-day-number {
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .calendar-day-cell.today .calendar-day-number {
+      background: var(--primary);
+      color: white;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .calendar-event {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.25rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .calendar-event:hover {
+      transform: translateX(2px);
+    }
+
+    .calendar-event.confirmed {
+      background: #DEF7EC;
+      color: #03543F;
+      border-left: 3px solid var(--success);
+    }
+
+    .calendar-event.pending {
+      background: #FEF3C7;
+      color: #92400E;
+      border-left: 3px solid var(--warning);
+    }
+
+    .calendar-event.cancelled {
+      background: #FEE2E2;
+      color: #991B1B;
+      border-left: 3px solid var(--danger);
+    }
+
+    .event-count-badge {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 0.5rem;
+      background: var(--primary);
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .calendar-legend {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+
+    .events-sidebar {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .event-list-item {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .event-list-item:hover {
+      background: var(--light);
+    }
+
+    .event-list-item:last-child {
+      border-bottom: none;
+    }
+
+    .event-time {
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-bottom: 0.25rem;
+    }
+
+    .event-title {
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .event-details {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="panel-layout">
+    <!-- Sidebar Component -->
+    <div id="sidebarContainer"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header Component -->
+      <div id="headerContainer"></div>
+
+      <!-- Page Content -->
+      <div class="page-content">
+        <div class="container-fluid">
+
+          <!-- Calendar Header -->
+          <div class="calendar-header">
+            <div>
+              <h2 style="margin: 0; color: var(--dark);">Booking Calendar</h2>
+              <p style="color: var(--gray); margin: 0.25rem 0 0 0;">Manage venue bookings and availability</p>
+            </div>
+            <div class="calendar-view-toggle">
+              <button class="btn btn-sm btn-secondary active" data-view="month">
+                <i class="fas fa-calendar"></i> Month
+              </button>
+              <button class="btn btn-sm btn-secondary" data-view="week">
+                <i class="fas fa-calendar-week"></i> Week
+              </button>
+              <button class="btn btn-sm btn-secondary" data-view="day">
+                <i class="fas fa-calendar-day"></i> Day
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Grid -->
+          <div class="grid grid-3">
+
+            <!-- Calendar Display -->
+            <div class="full-calendar" style="grid-column: span 2;">
+              <div class="calendar-month-header">
+                <h3 class="calendar-month-title" id="calendarMonthTitle">February 2026</h3>
+                <div class="calendar-month-nav">
+                  <button class="btn btn-sm btn-secondary" onclick="changeCalendarMonth(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                  </button>
+                  <button class="btn btn-sm btn-primary" onclick="goToToday()">
+                    Today
+                  </button>
+                  <button class="btn btn-sm btn-secondary" onclick="changeCalendarMonth(1)">
+                    <i class="fas fa-chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="calendar-weekdays">
+                <div class="calendar-weekday">Sun</div>
+                <div class="calendar-weekday">Mon</div>
+                <div class="calendar-weekday">Tue</div>
+                <div class="calendar-weekday">Wed</div>
+                <div class="calendar-weekday">Thu</div>
+                <div class="calendar-weekday">Fri</div>
+                <div class="calendar-weekday">Sat</div>
+              </div>
+
+              <div class="calendar-days" id="calendarDaysGrid"></div>
+
+              <div class="calendar-legend">
+                <div class="legend-item">
+                  <div class="legend-color" style="background: #DEF7EC; border-left: 3px solid var(--success);"></div>
+                  <span>Confirmed</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color" style="background: #FEF3C7; border-left: 3px solid var(--warning);"></div>
+                  <span>Pending</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color" style="background: #FEE2E2; border-left: 3px solid var(--danger);"></div>
+                  <span>Cancelled</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upcoming Events Sidebar -->
+            <div class="events-sidebar">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="margin: 0;">Upcoming Events</h3>
+                <button class="btn btn-sm btn-primary" onclick="openModal('newBookingModal')" id="newBookingBtn" style="display: none;">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
+              <div id="upcomingEventsList"></div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="js/roles-config.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/modals.js"></script>
+  <script src="js/modals-extended.js"></script>
+  <script src="js/internal.js"></script>
+  <script>
+    let currentCalendarDate = new Date();
+    let calendarEvents = [];
+
+    $(document).ready(async function() {
+
+      // ========== LOAD COMPONENTS ==========
+      await ComponentLoader.loadMultiple([
+        { name: 'sidebar', target: 'sidebarContainer' },
+        { name: 'header', target: 'headerContainer' }
+      ]);
+
+      // Set page info
+      PageManager.setTitle('Booking Calendar');
+      PageManager.setActiveNav('calendar');
+
+      // Set role-based quick actions
+      const quickActions = [];
+      if (RoleManager.hasPermission('canCreate')) {
+        quickActions.push({
+          label: 'New Booking',
+          icon: 'fas fa-plus',
+          class: 'btn-primary',
+          onClick: "openModal('newBookingModal')"
+        });
+        $('#newBookingBtn').show();
+      }
+      quickActions.push({
+        label: 'Export Calendar',
+        icon: 'fas fa-download',
+        class: 'btn-secondary',
+        onClick: "exportCalendar()"
+      });
+      PageManager.setQuickActions(quickActions);
+
+      // ========== SAMPLE CALENDAR EVENTS ==========
+      calendarEvents = [
+        {
+          id: 'BK-1001',
+          date: '2026-02-15',
+          title: 'Wedding Reception',
+          venue: 'Grand Ballroom',
+          customer: 'John Smith',
+          guests: 350,
+          status: 'confirmed'
+        },
+        {
+          id: 'BK-1002',
+          date: '2026-02-20',
+          title: 'Corporate Conference',
+          venue: 'Conference Hall',
+          customer: 'TechCorp Inc.',
+          guests: 100,
+          status: 'pending'
+        },
+        {
+          id: 'BK-1003',
+          date: '2026-02-22',
+          title: 'Birthday Party',
+          venue: 'Garden Lawn',
+          customer: 'Sarah Johnson',
+          guests: 80,
+          status: 'confirmed'
+        },
+        {
+          id: 'BK-1004',
+          date: '2026-02-25',
+          title: 'Product Launch',
+          venue: 'Rooftop Terrace',
+          customer: 'StartupXYZ',
+          guests: 150,
+          status: 'confirmed'
+        },
+        {
+          id: 'BK-1005',
+          date: '2026-02-28',
+          title: 'Charity Gala',
+          venue: 'Grand Ballroom',
+          customer: 'Hope Foundation',
+          guests: 400,
+          status: 'pending'
+        },
+        {
+          id: 'BK-1006',
+          date: '2026-03-05',
+          title: 'Team Building Event',
+          venue: 'Conference Hall',
+          customer: 'GlobalTech',
+          guests: 75,
+          status: 'confirmed'
+        },
+        {
+          id: 'BK-1007',
+          date: '2026-03-10',
+          title: 'Anniversary Celebration',
+          venue: 'Garden Lawn',
+          customer: 'Mike & Emily',
+          guests: 120,
+          status: 'confirmed'
+        },
+        {
+          id: 'BK-1008',
+          date: '2026-03-15',
+          title: 'Art Exhibition Opening',
+          venue: 'Rooftop Terrace',
+          customer: 'Modern Art Gallery',
+          guests: 200,
+          status: 'pending'
+        },
+        {
+          id: 'BK-1009',
+          date: '2026-02-15',
+          title: 'Business Dinner',
+          venue: 'Conference Hall',
+          customer: 'Executive Group',
+          guests: 50,
+          status: 'confirmed'
+        }
+      ];
+
+      renderCalendar();
+      renderUpcomingEvents();
+
+      // View toggle functionality
+      $('.calendar-view-toggle .btn').on('click', function() {
+        $('.calendar-view-toggle .btn').removeClass('active');
+        $(this).addClass('active');
+        const view = $(this).data('view');
+        // View switching logic would go here
+        console.log('Switched to', view, 'view');
+      });
+
+    });
+
+    // ========== CALENDAR FUNCTIONS ==========
+    function renderCalendar() {
+      const year = currentCalendarDate.getFullYear();
+      const month = currentCalendarDate.getMonth();
+      const today = new Date();
+
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'];
+
+      $('#calendarMonthTitle').text(`${monthNames[month]} ${year}`);
+
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const prevLastDay = new Date(year, month, 0);
+
+      const firstDayIndex = firstDay.getDay();
+      const lastDayDate = lastDay.getDate();
+      const prevLastDayDate = prevLastDay.getDate();
+
+      let daysHTML = '';
+
+      // Previous month days
+      for (let x = firstDayIndex; x > 0; x--) {
+        daysHTML += `<div class="calendar-day-cell other-month">
+          <div class="calendar-day-number">${prevLastDayDate - x + 1}</div>
+        </div>`;
+      }
+
+      // Current month days
+      for (let i = 1; i <= lastDayDate; i++) {
+        const isToday = i === today.getDate() &&
+                        month === today.getMonth() &&
+                        year === today.getFullYear();
+
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+        const dayEvents = getEventsForDate(dateStr);
+
+        let eventsHTML = '';
+        const maxVisible = 2;
+        dayEvents.slice(0, maxVisible).forEach(event => {
+          eventsHTML += `<div class="calendar-event ${event.status}" onclick="viewEvent('${event.id}')" title="${event.title} - ${event.venue}">
+            ${event.title}
+          </div>`;
+        });
+
+        const moreCount = dayEvents.length - maxVisible;
+        const countBadge = moreCount > 0 ? `<div class="event-count-badge">+${moreCount}</div>` : '';
+
+        daysHTML += `<div class="calendar-day-cell ${isToday ? 'today' : ''}" onclick="selectDate('${dateStr}')">
+          <div class="calendar-day-number">${i}</div>
+          ${eventsHTML}
+          ${countBadge}
+        </div>`;
+      }
+
+      // Next month days to fill grid
+      const totalCells = daysHTML.match(/calendar-day-cell/g).length;
+      const remainingCells = 35 - totalCells;
+      for (let i = 1; i <= remainingCells; i++) {
+        daysHTML += `<div class="calendar-day-cell other-month">
+          <div class="calendar-day-number">${i}</div>
+        </div>`;
+      }
+
+      $('#calendarDaysGrid').html(daysHTML);
+    }
+
+    function getEventsForDate(dateStr) {
+      return calendarEvents.filter(event => event.date === dateStr);
+    }
+
+    function changeCalendarMonth(direction) {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+      renderCalendar();
+      renderUpcomingEvents();
+    }
+
+    function goToToday() {
+      currentCalendarDate = new Date();
+      renderCalendar();
+      renderUpcomingEvents();
+    }
+
+    function selectDate(dateStr) {
+      const events = getEventsForDate(dateStr);
+      const formattedDate = new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+      if (events.length > 0) {
+        const eventsList = events.map(e => `• ${e.title} (${e.venue})`).join('\n');
+        showSuccessToast(`${events.length} booking(s) on ${formattedDate}`);
+      } else {
+        if (RoleManager.hasPermission('canCreate')) {
+          confirmAction(
+            'Create New Booking',
+            `No bookings on ${formattedDate}. Would you like to create a new booking?`,
+            () => {
+              openModal('newBookingModal');
+            },
+            'Create Booking',
+            'btn-primary'
+          );
+        } else {
+          showSuccessToast(`No bookings scheduled for ${formattedDate}`);
+        }
+      }
+    }
+
+    function renderUpcomingEvents() {
+      const today = new Date();
+      const upcoming = calendarEvents
+        .filter(event => new Date(event.date) >= today)
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .slice(0, 10);
+
+      if (upcoming.length === 0) {
+        $('#upcomingEventsList').html('<p style="color: var(--gray); text-align: center;">No upcoming events</p>');
+        return;
+      }
+
+      const html = upcoming.map(event => `
+        <div class="event-list-item" onclick="viewEvent('${event.id}')">
+          <div class="event-time">
+            ${new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+          </div>
+          <div class="event-title">${event.title}</div>
+          <div class="event-details">
+            <i class="fas fa-map-marker-alt"></i> ${event.venue} •
+            <i class="fas fa-users"></i> ${event.guests} guests
+            <span class="badge badge-${event.status === 'confirmed' ? 'success' : 'warning'}" style="margin-left: 0.5rem; font-size: 0.7rem;">
+              ${event.status}
+            </span>
+          </div>
+        </div>
+      `).join('');
+
+      $('#upcomingEventsList').html(html);
+    }
+
+    function viewEvent(id) {
+      const event = calendarEvents.find(e => e.id === id);
+      if (event) {
+        showBookingDetail(id);
+      }
+    }
+
+    function exportCalendar() {
+      showSuccessToast('Exporting calendar...');
+    }
+  </script>
+
+</body>
+</html>

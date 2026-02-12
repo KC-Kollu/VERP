@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse our premium event venues - Grand ballrooms, conference halls, garden lawns, and more.">
+  <title>Our Venues - Venue ERP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <i class="fas fa-building"></i>
+        <span>Venue ERP</span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="venues.html" class="nav-link active">Venues</a></li>
+        <li><a href="availability.html" class="nav-link">Check Availability</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="#" class="nav-link" onclick="openModal('loginModal'); return false;"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        <li><a href="#" class="btn btn-primary" onclick="openModal('registerModal'); return false;">Sign Up</a></li>
+      </ul>
+      <button class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="hero" style="padding: 6rem 0 4rem; margin-top: 4rem;">
+    <div class="container text-center">
+      <h1 style="font-size: 3rem; margin-bottom: 1rem;">Our Premium Venues</h1>
+      <p style="font-size: 1.25rem; opacity: 0.95;">Discover the perfect space for your next event</p>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="section-sm bg-light">
+    <div class="container">
+      <div id="venueFilters" class="grid grid-4" style="gap: 1rem;">
+        <div class="form-group" style="margin-bottom: 0;">
+          <select id="eventType" class="form-control form-select">
+            <option value="">All Event Types</option>
+            <option value="wedding">Wedding</option>
+            <option value="corporate">Corporate Event</option>
+            <option value="conference">Conference</option>
+            <option value="social">Social Event</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <select id="capacity" class="form-control form-select">
+            <option value="">All Capacities</option>
+            <option value="0-100">0 - 100 Guests</option>
+            <option value="100-300">100 - 300 Guests</option>
+            <option value="300-500">300 - 500 Guests</option>
+            <option value="500+">500+ Guests</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <select id="priceRange" class="form-control form-select">
+            <option value="">All Prices</option>
+            <option value="0-50000">₹0 - ₹50,000</option>
+            <option value="50000-100000">₹50,000 - ₹1,00,000</option>
+            <option value="100000-200000">₹1,00,000 - ₹2,00,000</option>
+            <option value="200000+">₹2,00,000+</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <select id="location" class="form-control form-select">
+            <option value="">All Locations</option>
+            <option value="downtown">Downtown</option>
+            <option value="suburban">Suburban</option>
+            <option value="business">Business District</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Venues Grid -->
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3" id="venuesGrid">
+
+        <!-- Venue 1 -->
+        <div class="card">
+          <img src="https://placehold.co/400x250/3498db/white?text=Grand+Ballroom" alt="Grand Ballroom" class="card-img">
+          <div class="card-body">
+            <span class="badge badge-primary">Wedding</span>
+            <h3 class="card-title">Grand Ballroom</h3>
+            <div class="card-meta">
+              <span><i class="fas fa-users"></i> 500 Guests</span>
+              <span><i class="fas fa-expand"></i> 5000 sq ft</span>
+            </div>
+            <p class="card-text">Elegant ballroom perfect for weddings, corporate galas, and large celebrations.</p>
+            <div class="card-footer">
+              <span class="card-price price">150000</span>
+              <a href="venue-detail.html?id=1" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venue 2 -->
+        <div class="card">
+          <img src="https://placehold.co/400x250/e74c3c/white?text=Conference+Hall" alt="Conference Hall" class="card-img">
+          <div class="card-body">
+            <span class="badge badge-success">Corporate</span>
+            <h3 class="card-title">Executive Conference Hall</h3>
+            <div class="card-meta">
+              <span><i class="fas fa-users"></i> 200 Guests</span>
+              <span><i class="fas fa-expand"></i> 2500 sq ft</span>
+            </div>
+            <p class="card-text">State-of-the-art conference room with modern AV equipment.</p>
+            <div class="card-footer">
+              <span class="card-price price">80000</span>
+              <a href="venue-detail.html?id=2" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venue 3 -->
+        <div class="card">
+          <img src="https://placehold.co/400x250/27ae60/white?text=Garden+Lawn" alt="Garden Lawn" class="card-img">
+          <div class="card-body">
+            <span class="badge badge-success">Social</span>
+            <h3 class="card-title">Garden Lawn</h3>
+            <div class="card-meta">
+              <span><i class="fas fa-users"></i> 300 Guests</span>
+              <span><i class="fas fa-expand"></i> 8000 sq ft</span>
+            </div>
+            <p class="card-text">Beautiful outdoor space ideal for weddings and receptions.</p>
+            <div class="card-footer">
+              <span class="card-price price">100000</span>
+              <a href="venue-detail.html?id=3" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venue 4 -->
+        <div class="card">
+          <img src="https://placehold.co/400x250/9b59b6/white?text=Royal+Banquet" alt="Banquet Hall" class="card-img">
+          <div class="card-body">
+            <span class="badge badge-primary">Wedding</span>
+            <h3 class="card-title">Royal Banquet Hall</h3>
+            <div class="card-meta">
+              <span><i class="fas fa-users"></i> 350 Guests</span>
+              <span><i class="fas fa-expand"></i> 4000 sq ft</span>
+            </div>
+            <p class="card-text">Luxurious banquet hall with chandeliers and premium catering setup.</p>
+            <div class="card-footer">
+              <span class="card-price price">120000</span>
+              <a href="venue-detail.html?id=4" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venue 5 -->
+        <div class="card">
+          <img src="https://placehold.co/400x250/f39c12/white?text=Meeting+Room" alt="Meeting Room" class="card-img">
+          <div class="card-body">
+            <span class="badge badge-warning">Conference</span>
+            <h3 class="card-title">Board Meeting Room</h3>
+            <div class="card-meta">
+              <span><i class="fas fa-users"></i> 50 Guests</span>
+              <span><i class="fas fa-expand"></i> 800 sq ft</span>
+            </div>
+            <p class="card-text">Intimate boardroom perfect for corporate meetings and workshops.</p>
+            <div class="card-footer">
+              <span class="card-price price">25000</span>
+              <a href="venue-detail.html?id=5" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venue 6 -->
+        <div class="card">
+          <img src="https://placehold.co/400x250/16a085/white?text=Rooftop+Terrace" alt="Rooftop" class="card-img">
+          <div class="card-body">
+            <span class="badge badge-success">Social</span>
+            <h3 class="card-title">Rooftop Terrace</h3>
+            <div class="card-meta">
+              <span><i class="fas fa-users"></i> 150 Guests</span>
+              <span><i class="fas fa-expand"></i> 3000 sq ft</span>
+            </div>
+            <p class="card-text">Stunning rooftop with panoramic city views for cocktail parties.</p>
+            <div class="card-footer">
+              <span class="card-price price">90000</span>
+              <a href="venue-detail.html?id=6" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 class="footer-title"><i class="fas fa-building"></i> Venue ERP</h3>
+          <p class="footer-text">Your trusted partner for venue management and event planning.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="venues.html">Venues</a></li>
+            <li><a href="availability.html">Check Availability</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="enquiry.html"><i class="fas fa-paper-plane"></i> Send Enquiry</a></li>
+            <li><a href="customer/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Services</h4>
+          <ul class="footer-links">
+            <li><a href="venues.html?type=wedding">Weddings</a></li>
+            <li><a href="venues.html?type=corporate">Corporate Events</a></li>
+            <li><a href="venues.html?type=conference">Conferences</a></li>
+            <li><a href="venues.html?type=social">Social Events</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Contact Us</h4>
+          <ul class="footer-links">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Business St, City, 560001</li>
+            <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+            <li><i class="fas fa-envelope"></i> info@venueerp.com</li>
+            <li><i class="fas fa-clock"></i> Mon - Sat: 9AM - 6PM</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Venue ERP. All Rights Reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms & Conditions</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Auth Modals -->
+  <div id="authModalsContainer"></div>
+
+  <!-- Load Auth Modals -->
+  <script>
+    $(document).ready(function() {
+      $("#authModalsContainer").load("includes/auth-modals.html");
+    });
+  </script>
+
+</body>
+</html>
