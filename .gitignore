@@ -1,0 +1,22 @@
+# Claude Code files
+.claude/
+
+# Documentation files (but keep README.md)
+AUTH_GUIDE.md
+CHANGELOG.md
+COMPLETE_SUMMARY.md
+PROJECT_STATUS_REPORT.md
+customer/README.md
+internal/MODULAR_ARCHITECTURE.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Backup files
+*.bak
+*.backup
